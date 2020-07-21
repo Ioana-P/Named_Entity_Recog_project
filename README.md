@@ -1,10 +1,13 @@
 # Named Entity Recognition classifier in pytorch and sklearn
 
-### Given a set of documents, can we identify what the most important entities mentioned are? Can we classify terms as relating to dates, times, organisations and geopolitical entities so that we can take any text (such as a news article) and automatically extract information and use it to populate summary tables or to help search queries? Moreover, how successfully can we train a model to identify the entirety of an NE token and not over-tagging or under-tagging words around the NE?
+#### Given a set of documents, can we identify what the most important entities mentioned are? 
+
+##### Can we classify terms as relating to dates, times, organisations and geopolitical entities so that we can take any text (such as a news article) and automatically extract information and use it to populate summary tables or to help search queries? 
+Moreover, how successfully can we train a model to identify the entirety of an NE token and not over-tagging or under-tagging words around the NE?
 
 ##### The most successful developments in this area have employed neural network architectures, which is what I will be using in this project[1]. 
 
-##### In this project I will have built a baseline feature-based model to serve as a comparison and for interpreting feature importance and detecting underlying statistical trends in our data. The majority of the project will be focused on building a Recurrent Neural Network (RNN) in pytorch and improving that model through hyperparameter optimisation and adding an attention layer. 
+###### In this project I will have built a baseline feature-based model to serve as a comparison and for interpreting feature importance and detecting underlying statistical trends in our data. The majority of the project will be focused on building a Recurrent Neural Network (RNN) in pytorch and improving that model through hyperparameter optimisation and adding an attention layer. 
 ##### By the end I hope to have achieved a reasonable neural classifier (with an macro-averaged F1 score above 0.8) that utilises an attention layer to capture inter-word dependencies. As an additional goal, I would like to deploy this model to via AWS to a web app that can interactively highlight NEs within the text. 
 _____________________________________________________________________________________________________________________________
 

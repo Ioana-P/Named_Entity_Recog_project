@@ -58,7 +58,7 @@ Using [eli5 package](#https://eli5.readthedocs.io/en/latest/overview.html) we ca
 Transition weights between Named Entity States: 
 ![weights_table](https://github.com/Ioana-P/NER_classifier_in_pytorch/blob/master/fig/transition_weights_eli5_crf.png)
 
-Samples of some weights for different 
+Samples of some weights for different features for just two entity classes: 
 ![sample weights feats](https://github.com/Ioana-P/NER_classifier_in_pytorch/blob/master/fig/feature_weights_eli5_crf.png)
 
 

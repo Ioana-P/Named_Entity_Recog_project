@@ -17,7 +17,52 @@ A named entity (NE) is a word or group of words “that clearly identifies one i
 
 (LINK to youtube video; and/or blog post)
 
-###  Significant findings/ Executive Summary
+The target labels for sequence classification come in two parts, the BIO tag which refers to:
+* B - beginning of NE chunk
+* I - inside NE chunk
+* O - not an NE
+
+and the label stating what type of 
+* geo = Geographical Entity
+* org = Organization
+* per = Person
+* gpe = Geopolitical Entity
+* tim = Time indicator
+* art = Artifact
+* eve = Event
+* nat = Natural Phenomenon
+
+###  Significant findings/ Executive Summary (so far ...)
+
+Using [sklearn's Conditional Random Field suite](#https://sklearn-crfsuite.readthedocs.io/en/latest/index.html) and the [seqeval package](#https://pypi.org/project/seqeval/) for evaluation, my Minimum Viable Product has achieved a macro-average F1 score of 0.717. The table below shows this model's performance on the different categories ('support' refers to number of instances of each type within the validation data set). 
+
+| Entity type |precision    |recall  |f1-score   |support|
+|:------------|:------------|:-------|:----------|:------|
+|        geo  |     0.71    |  0.76  |    0.74   |    422|
+|        gpe  |     0.81    |  0.81  |    0.81   |    218|
+|        tim  |     0.76    |  0.72  |    0.74   |    206|
+|        org  |     0.89    |  0.72  |    0.80   |    243|
+|        per  |     0.00    |  0.00  |    0.00   |      5|
+|        eve  |     0.56    |  0.47  |    0.51   |    226|
+|        art  |     0.50    |  0.27  |    0.35   |     15|
+|        nat  |     0.00    |  0.00  |    0.00   |      1|
+| ------------|-------------|--------|-----------|-------|
+|avg / total  |     0.74    | 0.70   |  0.71     | 1336  |
+
+             
+
+### MVP Model interpretation: 
+
+Using [eli5 package](#https://eli5.readthedocs.io/en/latest/overview.html) we can investigate what the weights between different states (i.e. the Named Entities) are, as well as effect of different features on the likelihood of predicting a feature as being of any particular state (see Fig 1 below):
+
+Transition weights between Named Entity States: 
+
+
+
+Samples of some weights for different 
+
+
+
 
 ## OSEMN
 

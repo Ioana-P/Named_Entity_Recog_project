@@ -155,6 +155,40 @@ def sent_to_vect(feature_list : list, targets_list : list, vocab : dict, ne_dict
         
     return vect_sentences, vect_label_sentences
 
+def prep_batch(batch_sentences : list, batch_sentences_labels : list, vocab : dict, word_vect_dim = 50):
+    """Function takes in a list of lists (each sublist a sentence of n-dimension
+    numpy arrays), the associated list of lists of NE labels and a vocabulary (dict)"""
+    #compute length of longest sentence in batch
+    batch_max_len = max([len(sentence) for sentence in batch_sentences_labels])
+    #prepare a numpy array with the data, initializing the data with 'PAD' 
+    #and all labels with -1; initializing labels to -1 differentiates tokens 
+    #with tags from 'PAD' tokens
+    #note the dimensional change here as we are effectively about to 
+    # concatenate the sentences along the 2nd dimension
+    batch_data = np.zeros((len(batch_sentences), batch_max_len, word_vect_dim))
+    batch_labels = -1*np.ones((len(batch_sentences), batch_max_len))
+    #copy the data to the numpy array
+    for j in range(len(batch_sentences)):
+        #accessing individual sentence below
+        cur_len = len(batch_sentences[j])
+        
+        for k in range(len(batch_sentences[j])):
+            #accessing individual word vectors below
+            batch_data[j,k, :] = batch_sentences[j][k].reshape(1,-1)
+            
+        batch_labels[j][:cur_len] = batch_sentences_labels[j]
+
+    #since all data are indices, we convert them to torch LongTensors
+    batch_data, batch_labels = torch.Tensor(batch_data), torch.Tensor(batch_labels)
+
+    #convert Tensors to Variables
+    # Torch tensors and torch Variables are almost the same, the latter being a wrapper fn
+    # that allows for additional methods to be called onto the underlying tensor. 
+    # So we're reassigning them as Variables for extra future flexibility
+#     batch_data, batch_labels = Variable(batch_data), Variable(batch_labels)
+    return batch_data, batch_labels
+    
+
 #################################EDA#####################################
 
 def example_output(num, data, estimator, target_data, word_arg = 'word.lower()'):

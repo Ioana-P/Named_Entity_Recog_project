@@ -85,9 +85,9 @@ class EntityETL(object):
         self.ne_tag_map['UNK_NE'] = 0
         self.pos_tag_map['UNK_POS'] = 0
 
-        self.vocab['PAD'] = -1
-        self.ne_tag_map['PAD'] = -1
-        self.pos_tag_map['PAD'] = -1
+        self.vocab['PAD'] = 1
+        self.ne_tag_map['PAD'] = 1
+        self.pos_tag_map['PAD'] = 1
 
         list_ne_tags = []
         list_pos_tags = []

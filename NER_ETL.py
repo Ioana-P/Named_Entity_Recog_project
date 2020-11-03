@@ -156,7 +156,7 @@ class EntityETL(object):
         self.vocab_size = len(self.vocab)
         return 
 
-    def load_train_input_data(self, csv_file_path):
+    def load_input_data(self, csv_file_path):
         """Loads the input training data into the object from a file
         for model training purposes. At this point out is still roughly 
         compatible with either feature-based or neural model.
@@ -262,7 +262,7 @@ class EntityETL(object):
 
         return
         
-    def prep_train_for_nn(self, train_sentences= None, train_labels = None,
+    def prep_input_for_nn(self, train_sentences= None, train_labels = None,
                         train_pos_tags = None):
         """[summary]
 
@@ -300,12 +300,12 @@ class EntityETL(object):
                    for pos in pos_sent]
             nn_train_pos.append(pos)
 
-        if len(nn_train_pos) == 0 :
+        if train_pos_tags == None :
             return nn_train_sentences, nn_train_labels
+        else:
+            return nn_train_sentences, nn_train_pos, nn_train_labels
 
-        return nn_train_sentences, nn_train_pos, nn_train_labels
-
-    def nn_train_batch_generator(self, train_sentences_nn, train_labels_nn, train_pos_tags_nn = None, batch_len = 50):
+    def nn_batch_generator(self, train_sentences_nn, train_labels_nn, train_pos_tags_nn = None, batch_len = 50):
         """Performs preprocessing and tokenisation steps for neural model.
 
         Args:

@@ -81,13 +81,13 @@ class EntityETL(object):
         self.ne_tag_map = {}
         self.pos_tag_map = {}
 
-        self.vocab['UNK'] = 0
-        self.ne_tag_map['UNK_NE'] = 0
-        self.pos_tag_map['UNK_POS'] = 0
+        self.vocab['UNK'] = 1
+        self.ne_tag_map['UNK_NE'] = 1
+        self.pos_tag_map['UNK_POS'] = 1
 
-        self.vocab['PAD'] = 1
-        self.ne_tag_map['PAD'] = 1
-        self.pos_tag_map['PAD'] = 1
+        self.vocab['PAD'] = 0
+        self.ne_tag_map['PAD'] = 0
+        self.pos_tag_map['PAD'] = 0
 
         list_ne_tags = []
         list_pos_tags = []
@@ -298,6 +298,7 @@ class EntityETL(object):
                 batch_ne_tags[j][:cur_len] = batch_labels[j]
             # print(batch_data)
             batch_data, batch_ne_tags = torch.LongTensor(batch_data), torch.LongTensor(batch_ne_tags)
+            # batch_data, batch_ne_tags = torch.Tensor(batch_data), torch.LongTensor(batch_ne_tags)
 
             batch_data, batch_ne_tags = Variable(batch_data), Variable(batch_ne_tags)
 

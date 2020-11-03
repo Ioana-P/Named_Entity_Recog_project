@@ -147,11 +147,11 @@ class EntityETL(object):
         set_ne_tags = set(list_ne_tags)
         set_pos_tags = set(list_pos_tags)
 
-        for i, word in enumerate(set_words, start=1):
+        for i, word in enumerate(set_words, start=2):
             self.vocab[word] = i
-        for i, ne_tag in enumerate(set_ne_tags, start=1):
+        for i, ne_tag in enumerate(set_ne_tags, start=2):
             self.ne_tag_map[ne_tag] = i
-        for i, pos_tag in enumerate(set_pos_tags, start=1):
+        for i, pos_tag in enumerate(set_pos_tags, start=2):
             self.pos_tag_map[pos_tag] = i
         self.vocab_size = len(self.vocab)
         return 
@@ -221,7 +221,7 @@ class EntityETL(object):
         return self.train_sentences, self.train_labels
 
 
-    def load_embed_vects(self, embedding_file = None, embedding_dim = None):
+    def load_embed_vects(self, embedding_file = None, embedding_dim = None, return_array=False):
         """Loads and stores embedding vectors. Call function with empty params 
         to simply use the prespecified embedding_file and dim set at 
         instantiation.
@@ -238,7 +238,9 @@ class EntityETL(object):
             self.embedding_dim=embedding_dim
 
         avg_vect = np.zeros((self.embedding_dim))
+    
         with open(self.embedding_file, 'rb') as f:
+
             for line in f:
                 parts = line.split()
                 word = parts[0].decode('utf-8')
@@ -250,6 +252,14 @@ class EntityETL(object):
             # present in GloVe's vocabulary, for instance
             self.embed_dict['UNK'] = avg_vect/len(self.embed_dict)
             self.embed_dict['PAD'] = np.zeros((self.embedding_dim))
+
+            self.embedding_weights_matrix = np.zeros(((len(self.embed_dict)+2) ,  embedding_dim))
+
+            self.embedding_weights_matrix[0] = self.embed_dict['PAD']
+            self.embedding_weights_matrix[1] = self.embed_dict['UNK']
+            for i, word in enumerate(self.embed_dict.keys(), start=2):
+                self.embedding_weights_matrix[i] = self.embed_dict[word]
+
         return
         
     def prep_train_for_nn(self, train_sentences= None, train_labels = None,

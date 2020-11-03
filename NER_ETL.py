@@ -6,6 +6,8 @@
 import pandas as pd
 import numpy as np
 
+from sklearn.model_selection import train_test_split
+
 # import matplotlib.pyplot as plt
 # import seaborn as sns
 
@@ -26,6 +28,40 @@ from torch.autograd import Variable
 import csv
 
 
+
+def load_and_split_data(csv_file_path :str , 
+                            train_size : float, test_size : float,
+                             val_size = 0.0):
+        """[summary]
+
+        Args:
+            csv_file_path ([type]): [description]
+        """     
+        if ((train_size+test_size!=1.0) and val_size==0.0):
+            val_size = 1.0 - (train_size+test_size)
+
+        with open(csv_file_path) as f:
+            csv_reader = csv.reader(f, delimiter=',', quotechar='"')
+            next(csv_reader)
+
+        data = pd.read_csv(csv_file_path, index_col=0)
+
+        train_val , test = train_test_split(data, test_size = test_size, 
+                                            train_size = (1.0 - test_size),
+                                            random_state=12345, 
+                                            shuffle=False, )
+
+        test.to_csv('clean_data/TEST_clean_data.csv')
+
+        if val_size!=0.0:
+            train, valid = train_test_split(train_val, test_size = val_size,
+                                            random_state=12345, shuffle=False)
+            train.to_csv('clean_data/TRAIN_clean_data.csv')
+            valid.to_csv('clean_data/VALID_clean_data.csv')
+        else:
+            train_val.to_csv('clean_data/TRAIN_clean_data.csv')
+
+        return
 
 
 #################################CLEANING#####################################
@@ -67,7 +103,6 @@ class EntityETL(object):
         self.batch_starting_point = 0
 
         return
-
 
 
     def load_train_vocab_nn(self, csv_file_path ):
@@ -272,8 +307,12 @@ class EntityETL(object):
 
         #compute length of longest sentence in batch
         # for b_ind in range(batch_starting_point, batch_starting_point + 50):s
-        batch_sentences = train_sentences_nn[self.batch_starting_point:self.batch_starting_point+ batch_len]
-        batch_labels = train_labels_nn[self.batch_starting_point:self.batch_starting_point+ batch_len]
+        try:
+            batch_sentences = train_sentences_nn[self.batch_starting_point:self.batch_starting_point+ batch_len]
+            batch_labels = train_labels_nn[self.batch_starting_point:self.batch_starting_point+ batch_len]
+        except IndexError:
+            self.batch_starting_point = 0
+        
         # print(len(batch_sentences[0]))
         # print(len(batch_labels[0]))
         # POS tag implementation stopping here until further notice -- WILL COME BACK TO THIS!

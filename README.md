@@ -20,7 +20,7 @@ We report on this rather than accuracy (which was at 95%), because we have an ex
 
 #### Examples
 
-Let's go through some examples of the model's outputs on the validation data. Below is a sentence that where the model achieved a perfect score, identifying the beginning (B-) and inside (I-) components of an NE. 'tim' refers to a time indicator (which can vary from 'noon' to '41st millenium'). All the 'O' rows are of course, non-NEs. This is a somewhat easy task however, as the model was presented with a short sentence and a single, 2-part NE.
+Let's go through some examples of the model's outputs on the validation data. Below is a sentence that where the model achieved a perfect score, identifying the beginning (`B-`) and inside (`I-`) components of an NE. `'tim'` refers to a time indicator (which can vary from 'noon' to '41st millenium'). All the 'O' rows are of course, non-NEs. This is a somewhat easy task however, as the model was presented with a short sentence and a single, 2-part NE.
 
 |True  |	Pred  |	Word|
 |:-------|:------|:------|
@@ -34,7 +34,7 @@ Let's go through some examples of the model's outputs on the validation data. Be
 |I-tim |	I-tim  |	century|
 |O |	O  |	.|
 
-In the next example we see that the the model overestimated the boundaries of one NE at the expense of another, labelling 'U.S. Vice' as an organisation (org), when 'Vice President Dick Cheney' should have been entirely labelled a person (per). It will be interesting to see how the attention-based model navigates these fine boundaries between NEs. 
+In the next example we see that the the model overestimated the boundaries of one NE at the expense of another, labelling 'U.S. Vice' as an organisation (org), when 'Vice President Dick Cheney' should have been entirely labelled a person (per). It will be interesting to see how the attention-based model navigates these fine boundaries between NEs. The model understandands the data broadly on two categories of features we've trained it on:
 
 |True | 	Pred |  	Word |
 |:-------|:--------|:------|
@@ -56,7 +56,14 @@ In the next example we see that the the model overestimated the boundaries of on
 |	I-per | 	I-per	cheney
 |	O | 	O | 	. |
 
-This final example is a partial misclassification of the named entity of the "Interim Prime Minister Ali Mohamed Gedi". Notice that the model managed to determine almost all of the NE correctly, except for "interim", mistaking that for an artefact. This would have naturally been counted as a misclassification, but, all things considered, if you were reading a text highlighted automatically and it was only "interim" absent from the highlighted `B-per` text, you'd probably gloss over that mistake. 
+
+1. The in-word (or in-sentence features), such as whether it's a nouns/adjective/verb/etc.., what its last 3 letters are, what POS (part-of-sentence) the word before was, and so on.
+
+2. The **transitional weights** between different NEs, i.e. if the model's just seen the start of a organisational entity, how likely is it a that the next chunk will the inside of an organisational entity (we know that the model gives this transition a weight of 3.757, which is comparatively high).
+
+So, when the model considered 'vice' to be the inside chunk of an organisational entity, it takes that into account first, then uses the other features about the word 'Vice' to decide that it's more likely to be be an I-org than a B-per. The model also then has to compare this to the calculated probability that 'Vice' is a 'B-per' and goes with whichever is higher.  
+
+This final example is a partial misclassification of the named entity of the "Interim Prime Minister Ali Mohamed Gedi". Notice that the model managed to determine almost all of the NE correctly, except for "interim", mistaking that for an artefact. 
 
 |  True |	Pred |	Word |
 |:-------|:--------|:------|
@@ -80,6 +87,10 @@ This final example is a partial misclassification of the named entity of the "In
 |  	O |	O |	in |
 |  	B-geo |	B-geo |	mogadishu |
 |  	O |	O |	. |
+
+
+This would have naturally been counted as a misclassification, but, all things considered, if you were reading a text highlighted automatically and it was only "interim" absent from the highlighted `B-per` text, you'd probably gloss over that mistake. 
+
 
 
 ### Part 2 (WIP):

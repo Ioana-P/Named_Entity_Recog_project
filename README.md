@@ -1,11 +1,11 @@
 # Named Entity (NE) Recognition classifier in pytorch and sklearn
 
-#### Given a set of documents, can we identify what the most important entities mentioned are? 
+#### Given a set of documents, can we identify the most important entities mentioned? 
 
-##### Can we classify terms as relating to dates, times, organisations and geopolitical entities so that we can take any text (such as a news article) and automatically extract information and use it to populate summary tables or to help search queries? 
-Moreover, how successfully can we train a model to identify the entirety of an NE token and not over-tagging or under-tagging words around the NE?
+##### The ultimate aim would be to be able to take any text (such as a news article) and automatically extract information and use it to populate summary tables, or help search queries. An effective NER system would be able to parse unstructured data, and return it in a nice, clean, tabular form.
+How 
 
-This project is split into two parts, each using a different metholodogy to achieve the stated goal above:
+This project is split into two parts, each using a different methodology to achieve the stated goal above:
 Part 1: Using traditional Machine Learning models and techniques to predict NEs. 
 Part 2: **(Work-in-progress)** Using neural network architectures for the same purpose. 
 
@@ -123,7 +123,7 @@ and the label stating what type of
 * eve = Event
 * nat = Natural Phenomenon
 
-###  Significant findings/ Executive Summary (so far ...)
+###  Summary of work done so far
 
 Using [sklearn's Conditional Random Field suite](#https://sklearn-crfsuite.readthedocs.io/en/latest/index.html) and the [seqeval package](#https://pypi.org/project/seqeval/) for evaluation, my Minimum Viable Product has achieved a macro-average F1 score of 0.696. The table below shows this model's performance on the different categories ('support' refers to number of instances of each type within the validation data set). 
 
